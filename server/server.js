@@ -1,17 +1,25 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const { readdirSync } = require('fs');
+const dotenv = require('dotenv');
+dotenv.config();
+
 const app = express();
+app.use(cors());
 
+// routes
+readdirSync("./routes").map((r) => app.use('/', require("./routes/" + r)));
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-})
+// database
+mongoose.connect(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => console.log('Database connected')).catch(err => console.log(err));
 
-app.get('/books', (req, res) => {
-    res.send('This is a new book');
-})
-
+const PORT = process.env.PORT || 8000;
 
 app.listen(8000, (req, res) => {
-    console.log("server is listening")
+    console.log(`Server is running on port ${PORT}`);
 })
 
