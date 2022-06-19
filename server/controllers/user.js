@@ -1,5 +1,5 @@
-
-
 exports.home = (req, res) => {
-    res.send('home');
+    res.status(200).json({
+        message: 'Welcome to the user route'
+    });
 }
